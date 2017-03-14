@@ -1,0 +1,13 @@
+main: me.Tiernanator.Entities.Main
+version: 0.4
+name: Entities
+description: Mo' Creatures! (Entities to be precise)
+load: POSTWORLD
+author: Tiernanator
+website: None
+database: false
+depend: [Utilities]
+prefix: Entities
+softdepend: []
+loadbefore: []
+commands:
