@@ -1,21 +1,14 @@
 package me.Tiernanator.Entities;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import me.Tiernanator.SQL.SQLServer;
-import me.Tiernanator.SQL.MySQL.MySQL;
+import me.Tiernanator.Utilities.SQL.SQLServer;
 
-public class Main extends JavaPlugin {
+public class EntitiesMain extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-
-//		initialiseSQL();
 
 		registerCommands();
 		registerEvents();
@@ -77,11 +70,6 @@ public class Main extends JavaPlugin {
 	
 	@Override
 	public void onDisable() {
-//		try {
-//			getSQL().closeConnection();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
 	}
 
 	public void registerCommands() {
@@ -95,86 +83,15 @@ public class Main extends JavaPlugin {
 		// pm.registerEvents(new PortalDestroy(this), this);
 	}
 
-	private static MySQL mySQL;
-
 	@SuppressWarnings("unused")
 	private void initialiseSQL() {
-		mySQL = new MySQL(SQLServer.HOSTNAME, SQLServer.PORT, null,
-				SQLServer.USERNAME, SQLServer.PASSWORD);
 
-		String query = "CREATE DATABASE IF NOT EXISTS ;";
-
-		Connection connection = null;
-		try {
-			connection = mySQL.openConnection();
-		} catch (SQLException | ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-
-		Statement statement = null;
-		try {
-			statement = connection.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			statement.execute(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		query = "USE ;";
-
-		statement = null;
-		try {
-			statement = connection.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			statement.execute(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		query = "CREATE TABLE IF NOT EXISTS Portals ( "
+		String query = "CREATE TABLE IF NOT EXISTS Portals ( "
 				+ "Name varchar(30) NOT NULL,"
 				+ "DestinationName varchar(30) NOT NULL,"
 				+ "FrameMaterial varchar(255)" + ");";
-
-		statement = null;
-		try {
-			statement = connection.createStatement();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		try {
-			statement.execute(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	public static MySQL getSQL() {
-		return mySQL;
-	}
-
-	public static Connection getSQLConnection() {
-
-		try {
-			if (!getSQL().checkConnection()) {
-				return getSQL().openConnection();
-			} else {
-				return getSQL().getConnection();
-			}
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+		SQLServer.executeQuery(query);
+		
 	}
 
 }
